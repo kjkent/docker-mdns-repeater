@@ -24,4 +24,4 @@ ENV APP_NAME="mdns-repeater-app" \
     APP_GROUPNAME="daemon"
 
 ENTRYPOINT ["/run.sh"]
-CMD ["mdns-repeater-app", "-f", "docker0", "eth0"]
+CMD ["mdns-repeater-app", "-f", "eth0", "docker0"]

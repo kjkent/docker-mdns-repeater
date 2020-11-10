@@ -35,6 +35,40 @@ You can also specify the:
  - `-f` flag to keep `mdns-repeater` running in foreground.
  - `-d` flag additionally to `-f` to print out parsed `mDNS` packets as they are received
 
+Docker image Usage
+==================
+
+Container is already configured for automatic restart (See `docker-compose.yml`).
+
+* Configure environment:
+
+  - `MDNS_REPEATER_INTERFACES`: names of the interfaces:
+
+    ```sh
+      export MDNS_REPEATER_INTERFACES="eth0 docker0"
+    ```
+  - `DOCKER_REGISTRY`: [**OPTIONAL**] registry prefix to pull image from a custom `Docker` registry:
+
+    ```sh
+      export DOCKER_REGISTRY="my_registry_hostname:5000/"
+    ```
+* Pull prebuilt `Docker` image:
+
+  ```sh
+    docker-compose pull
+  ```
+* Start prebuilt image:
+
+  ```sh
+    docker-compose up -d
+  ```
+* Stop/Restart:
+
+  ```sh
+    docker-compose stop
+    docker-compose start
+  ```
+
 Acknowledgments
 ===============
 
