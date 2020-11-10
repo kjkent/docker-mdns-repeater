@@ -1,7 +1,7 @@
 mdns-repeater Docker image
 ==========================
 
-[![](https://github.com/monstrenyatko/docker-mdns-repeater/workflows/ci/badge.svg?branch=main)](https://github.com/monstrenyatko/docker-mdns-repeater/actions?query=workflow%3Aci)
+[![](https://github.com/monstrenyatko/docker-mdns-repeater/workflows/ci/badge.svg?branch=master)](https://github.com/monstrenyatko/docker-mdns-repeater/actions?query=workflow%3Aci)
 
 About
 =====
