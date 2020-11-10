@@ -74,6 +74,7 @@ struct subnet whitelisted_subnets[MAX_SUBNETS];
 void *pkt_data = NULL;
 
 int foreground = 0;
+int debug = 0;
 int shutdown_flag = 0;
 
 char *pid_file = PIDFILE;
@@ -314,7 +315,6 @@ static void daemonize() {
 static void show_help(const char *progname) {
 	fprintf(stderr, "mDNS repeater (version " MDNS_REPEATER_VERSION ")\n");
 	fprintf(stderr, "Copyright (C) 2011 Darell Tan\n\n");
-
 	fprintf(stderr, "usage: %s [ -f ] <ifdev> ...\n", progname);
 	fprintf(stderr, "\n"
 					"<ifdev> specifies an interface like \"eth0\"\n"
@@ -322,7 +322,8 @@ static void show_help(const char *progname) {
 					"maximum number of interfaces is 5\n"
 					"\n"
 					" flags:\n"
-					"	-f	runs in foreground for debugging\n"
+					"	-f	runs in foreground\n"
+					"	-d	log debug messages when runs in foreground\n"
 					"	-b	blacklist subnet (eg. 192.168.1.1/24)\n"
 					"	-w	whitelist subnet (eg. 192.168.1.1/24)\n"
 					"	-p	specifies the pid file path (default: " PIDFILE ")\n"
@@ -386,10 +387,11 @@ static int parse_opts(int argc, char *argv[]) {
 	int help = 0;
 	struct subnet *ss;
 	char *msg;
-	while ((c = getopt(argc, argv, "hfp:b:w:")) != -1) {
+	while ((c = getopt(argc, argv, "hfdp:b:w:")) != -1) {
 		switch (c) {
 			case 'h': help = 1; break;
 			case 'f': foreground = 1; break;
+			case 'd': debug = 1; break;
 			case 'p':
 				if (optarg[0] != '/')
 					log_message(LOG_ERR, "pid file path must be absolute");
@@ -585,7 +587,7 @@ int main(int argc, char *argv[]) {
 				}
 
 				if (!whitelisted_packet) {
-					if (foreground)
+					if (foreground && debug)
 						printf("skipping packet from=%s size=%zd\n", inet_ntoa(fromaddr.sin_addr), recvsize);
 					continue;
 				}
@@ -600,13 +602,13 @@ int main(int argc, char *argv[]) {
 				}
 
 				if (blacklisted_packet) {
-					if (foreground)
+					if (foreground && debug)
 						printf("skipping packet from=%s size=%zd\n", inet_ntoa(fromaddr.sin_addr), recvsize);
 					continue;
 				}
 			}
 
-			if (foreground)
+			if (foreground && debug)
 				printf("data from=%s size=%zd\n", inet_ntoa(fromaddr.sin_addr), recvsize);
 
 			for (j = 0; j < num_socks; j++) {
@@ -614,7 +616,7 @@ int main(int argc, char *argv[]) {
 				if ((fromaddr.sin_addr.s_addr & socks[j].mask.s_addr) == socks[j].net.s_addr)
 					continue;
 
-				if (foreground)
+				if (foreground && debug)
 					printf("repeating data to %s\n", socks[j].ifname);
 
 				// repeat data

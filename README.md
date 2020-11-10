@@ -31,8 +31,9 @@ Example:
 mdns-repeater eth0 vlan1
 ```
 
-You can also specify the `-f` flag to keep `mdns-repeater` running in foreground for debugging,
-which prints packets as they are received.
+You can also specify the:
+ - `-f` flag to keep `mdns-repeater` running in foreground.
+ - `-d` flag additionally to `-f` to print out parsed `mDNS` packets as they are received
 
 Acknowledgments
 ===============
@@ -41,3 +42,4 @@ Acknowledgments
 and who described it in this [blog post](http://irq5.io/2011/01/02/mdns-repeater-mdns-across-subnets/).
 - **Kenny Levinsen** and contributors for maintaining the code and adding features in
 this [repository](https://github.com/kennylevinsen/mdns-repeater).
+- **Matthias Dettling** for `-d` flag idea in this [repository](https://github.com/devsecurity-io/mdns-repeater).
